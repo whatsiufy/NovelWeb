@@ -21,12 +21,12 @@ Flask-Migrate
 6. 后台地址：http://127.0.0.1:5000/admin
 ## 4. 项目效果图
 
-![首页](images/1.png)
-![登录页](images/2.png)
-![注册页](images/3.png)
-![用户页](images/4.png)
-![排行页](images/5.png)
-![上传小说页](images/6.png)
-![我的小说页](images/7.png)
+![首页](novel/images/1.png)
+![登录页](novel/images/2.png)
+![注册页](novel/images/3.png)
+![用户页](novel/images/4.png)
+![排行页](novel/images/5.png)
+![上传小说页](novel/images/6.png)
+![我的小说页](novel/images/7.png)
 ## 5. 说明
 个人项目，仅供参考
