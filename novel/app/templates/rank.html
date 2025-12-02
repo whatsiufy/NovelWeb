@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">下载排行榜</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>排名</th>
+      <th>标题</th>
+      <th>作者</th>
+      <th>分类</th>
+      <th>下载次数</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for n in ranked %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{ n.title }}</td>
+      <td>{{ n.author_name or '佚名' }}{% if n.user and n.user.deleted %}<small class="text-muted">（账号已注销）</small>{% endif %}</td>
+      <td><span class="badge bg-info">{{ n.category }}</span></td>
+      <td>{{ n.download_count }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="text-center text-muted">暂无上榜作品</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

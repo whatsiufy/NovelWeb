@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>我的小说</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>标题</th>
+            <th>作者</th>
+            <th>简介</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for novel in novels %}
+        <tr>
+            <td>{{ novel.title }}</td>
+            <td>{{ novel.author_name }}</td>
+            <td>{{ novel.description }}</td>
+            <td>
+                <a class="btn btn-sm btn-primary" href="{{ url_for('download', novel_id=novel.id) }}">下载</a>
+                <a class="btn btn-sm btn-warning" href="{{ url_for('edit', id=novel.id) }}">编辑</a>
+                <a class="btn btn-sm btn-danger" href="{{ url_for('delete', id=novel.id) }}" onclick="return confirm('确定删除？')">删除</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

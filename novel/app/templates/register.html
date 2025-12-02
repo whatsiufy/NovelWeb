@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5 col-lg-4">
+    <div class="card bk-card p-4">
+      <div class="text-center mb-4">
+        <h4 class="fw-bold text-primary">注册贝壳书屋</h4>
+        <small class="text-muted">Join us and start reading</small>
+      </div>
+
+      <!-- 闪现提示 -->
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="alert alert-warning mb-3">{{ messages[0] }}</div>
+        {% endif %}
+      {% endwith %}
+
+      <form method="post" id="regForm">
+        <div class="mb-3">
+          <label class="form-label">用户名</label>
+          <input type="text" name="username" class="form-control" required placeholder="2-20 位字符">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">密码</label>
+          <input type="password" name="password" id="pwd" class="form-control" required
+                 minlength="6" placeholder="至少 6 位字符">
+          <div class="form-text text-muted" id="pwdHelp">密码长度至少 6 位</div>
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-bk">创建账号</button>
+        </div>
+      </form>
+
+      <div class="text-center mt-3 small">
+        已有账号？
+        <a href="{{ url_for('login') }}" class="text-primary text-decoration-none">去登录</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 实时字数提示（可选） -->
+<script>
+const pwd = document.getElementById('pwd');
+const help = document.getElementById('pwdHelp');
+pwd.addEventListener('input', () => {
+  if (pwd.value.length < 6) {
+    help.textContent = `还需 ${6 - pwd.value.length} 位`;
+    help.style.color = '#dc3545';
+  } else {
+    help.textContent = '密码强度合格';
+    help.style.color = '#28a745';
+  }
+});
+</script>
+{% endblock %}

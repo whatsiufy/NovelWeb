@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>管理员后台</h3>
+
+<h4 class="mt-4">用户管理</h4>
+<table class="table table-sm">
+  <thead><tr><th>ID</th><th>用户名</th><th>操作</th></tr></thead>
+  <tbody>
+  {% for u in users %}
+    <tr>
+      <td>{{ u.id }}</td>
+      <td>{{ u.username }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin_del_user', user_id=u.id) }}" onsubmit="return confirm('确定软删除该用户？')">
+          <button class="btn btn-danger btn-sm">删除用户</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h4 class="mt-5">小说管理</h4>
+<table class="table table-sm">
+  <thead><tr><th>ID</th><th>标题</th><th>作者</th><th>操作</th></tr></thead>
+  <tbody>
+  {% for n in novels %}
+    <tr>
+      <td>{{ n.id }}</td>
+      <td>{{ n.title }}</td>
+      <td>{{ n.author_name }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin_del_novel', novel_id=n.id) }}" onsubmit="return confirm('确定彻底删除该小说？')">
+          <button class="btn btn-warning btn-sm">删除小说</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<a href="{{ url_for('index') }}" class="btn btn-outline-primary">返回首页</a>
+{% endblock %}

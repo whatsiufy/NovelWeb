@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>上传小说</h2>
+<form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label class="form-label">标题</label>
+        <input type="text" name="title" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">作者名</label>
+        <input type="text" name="author_name" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">简介</label>
+        <textarea name="description" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">小说文件（.txt）</label>
+        <input type="file" name="file" class="form-control" required>
+    </div>
+    <div class="mb-3">
+  <label class="form-label">分类</label>
+  <select name="category" class="form-select" required>
+    <option value="">-- 请选择 --</option>
+    {% for c in ['玄幻','修真','都市','言情','历史','军事','游戏','科幻','悬疑','短篇','其他'] %}
+      <option value="{{ c }}">{{ c }}</option>
+    {% endfor %}
+  </select>
+</div>
+    <button type="submit" class="btn btn-success">上传</button>
+</form>
+{% endblock %}

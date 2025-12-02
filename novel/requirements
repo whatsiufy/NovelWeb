@@ -1,0 +1,6 @@
+Flask2.3
+PyMySQL
+MySQL
+Flask-Login
+Flask-WTF
+Flask-Migrate

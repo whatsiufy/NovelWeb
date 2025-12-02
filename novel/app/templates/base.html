@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>小说网站</title>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <!-- 贝壳书屋主题色 -->
+<style>
+:root{
+  --bs-blue:#2f8bff;
+  --bs-light-blue:#e6f2ff;
+  --bs-footer:#f0f6ff;
+}
+body{
+  background: linear-gradient(135deg, #ffffff 0%, var(--bs-light-blue) 100%);
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+.bk-navbar{
+  background-color: rgba(255,255,255,.95);
+  backdrop-filter: blur(8px);
+  box-shadow:0 2px 6px rgba(47,139,255,.15);
+}
+.bk-navbar a{
+  color:var(--bs-blue);
+  font-weight:500;
+  margin:0 6px;
+  text-decoration:none;
+  transition:.2s;
+}
+.bk-navbar a:hover{
+  color:#005ef7;
+}
+.bk-hero{
+  background:var(--bs-blue);
+  color:#fff;
+  border-radius:1rem;
+  padding:3rem 2rem;
+  margin-bottom:2rem;
+}
+.bk-card{
+  background:#fff;
+  border:none;
+  border-radius:.75rem;
+  box-shadow:0 4px 12px rgba(47,139,255,.08);
+  transition:.3s;
+}
+.bk-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 8px 20px rgba(47,139,255,.12);
+}
+.btn-bk{
+  background-color:var(--bs-blue);
+  border-color:var(--bs-blue);
+}
+.btn-bk:hover{
+  background-color:#005ef7;
+  border-color:#005ef7;
+}
+footer{
+  background:var(--bs-footer);
+  font-size:.875rem;
+  color:#6c757d;
+  padding:2rem 0;
+  margin-top:4rem;
+  text-align:center;
+}
+</style>
+</head>
+<body>
+<div class="container mt-4">
+    <nav>
+        <a href="{{ url_for('index') }}">首页</a>
+        {% if current_user.is_authenticated %}
+        | <a href="{{ url_for('rank') }}">排行榜</a>
+        | <a href="{{ url_for('upload') }}">上传小说</a>
+        | <a href="{{ url_for('my_novels') }}">我的小说</a>
+        | <a href="{{ url_for('logout') }}">退出</a>
+        {% if current_user.is_admin %}
+  | <a href="{{ url_for('admin_dashboard') }}" class="text-danger">后台</a>
+{% endif %}
+        | <a href="javascript:void(0)" onclick="if(confirm('确定永久注销您的账户？')){document.getElementById('delMeBare').submit();}" class="text-danger">注销账户</a>
+
+<form id="delMeBare" method="post" action="{{ url_for('delete_me') }}"></form>
+
+        {% else %}
+        | <a href="{{ url_for('login') }}">登录</a>
+        | <a href="{{ url_for('register') }}">注册</a>
+        {% endif %}
+    </nav>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-info">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>
