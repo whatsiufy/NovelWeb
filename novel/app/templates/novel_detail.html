@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">首页</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('category_books', cate=novel.category) }}">{{ novel.category }}</a></li>
+        <li class="breadcrumb-item active">{{ novel.title }}</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<div class="card bk-card">
+  <div class="card-body">
+    <h1 class="card-title text-primary fw-bold">{{ novel.title }}</h1>
+    <h5 class="text-muted mb-4">
+      作者：{{ novel.author_name or '佚名' }}
+      <span class="badge bg-info ms-2">{{ novel.category }}</span>
+      <span class="badge bg-secondary ms-2">{{ novel.created_at.strftime('%Y-%m-%d') }}</span>
+    </h5>
+    
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="card bg-light">
+          <div class="card-body text-center">
+            <h3 class="text-primary">{{ novel.view_count }}</h3>
+            <p class="text-muted mb-0">浏览次数</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bg-light">
+          <div class="card-body text-center">
+            <h3 class="text-success">{{ novel.download_count }}</h3>
+            <p class="text-muted mb-0">下载次数</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bg-light">
+          <div class="card-body text-center">
+            <h3 class="text-warning">{{ novel.favorites|length }}</h3>
+            <p class="text-muted mb-0">收藏次数</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <h5>简介</h5>
+      <p class="text-secondary">{{ novel.description or '暂无简介' }}</p>
+    </div>
+
+    <div class="d-flex gap-2">
+      {% if current_user.is_authenticated %}
+      <a class="btn btn-bk btn-lg px-4" href="{{ url_for('download', novel_id=novel.id) }}">下载小说</a>
+      <form method="post" action="{{ url_for('toggle_favorite', novel_id=novel.id) }}">
+        <button type="submit" class="btn btn-lg {% if is_favorited %}btn-warning{% else %}btn-outline-warning{% endif %}">
+          {% if is_favorited %}取消收藏{% else %}收藏小说{% endif %}
+        </button>
+      </form>
+      {% else %}
+      <a class="btn btn-bk btn-lg px-4" href="{{ url_for('login') }}">登录后下载</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<footer class="mt-5">
+  &copy; 2025 贝壳书屋 · 让阅读像海风一样清爽
+</footer>
+{% endblock %}

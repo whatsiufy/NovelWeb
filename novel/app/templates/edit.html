@@ -1,16 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>编辑小说信息</h2>
-<form method="post">
-    <div class="mb-3">
-        <label class="form-label">简介</label>
-        <textarea name="description" class="form-control" rows="3">{{ novel.description }}</textarea>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">作者名</label>
-        <input type="text" name="author_name" class="form-control" value="{{ novel.author_name }}">
-    </div>
-    <button type="submit" class="btn btn-success">保存修改</button>
-</form>
+<div class="mb-4">
+  <h2>编辑小说信息</h2>
+  <a href="{{ url_for('my_novels') }}" class="text-decoration-none">返回我的小说</a>
+</div>
+
+<div class="card bk-card">
+  <div class="card-body">
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">标题</label>
+            <input type="text" class="form-control" value="{{ novel.title }}" readonly>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">分类</label>
+            <select name="category" class="form-select">
+                {% for c in ['玄幻','修真','都市','言情','历史','军事','游戏','科幻','悬疑','短篇','其他'] %}
+                <option value="{{ c }}" {% if novel.category == c %}selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">作者名</label>
+            <input type="text" name="author_name" class="form-control" value="{{ novel.author_name }}">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">简介</label>
+            <textarea name="description" class="form-control" rows="5">{{ novel.description }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">保存修改</button>
+        <a href="{{ url_for('my_novels') }}" class="btn btn-secondary">取消</a>
+    </form>
+  </div>
+</div>
 {% endblock %}

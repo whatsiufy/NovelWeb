@@ -1,29 +1,61 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2 class="mb-4">下载排行榜</h2>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>排名</th>
-      <th>标题</th>
-      <th>作者</th>
-      <th>分类</th>
-      <th>下载次数</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for n in ranked %}
-    <tr>
-      <td>{{ loop.index }}</td>
-      <td>{{ n.title }}</td>
-      <td>{{ n.author_name or '佚名' }}{% if n.user and n.user.deleted %}<small class="text-muted">（账号已注销）</small>{% endif %}</td>
-      <td><span class="badge bg-info">{{ n.category }}</span></td>
-      <td>{{ n.download_count }}</td>
-    </tr>
-    {% else %}
-    <tr><td colspan="5" class="text-center text-muted">暂无上榜作品</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="mb-4">
+  <h2>{{ title }}</h2>
+  <div class="btn-group mt-2" role="group">
+    <a href="{{ url_for('rank', sort='download') }}" class="btn {% if sort_by == 'download' %}btn-bk{% else %}btn-outline-primary{% endif %}">下载量</a>
+    <a href="{{ url_for('rank', sort='view') }}" class="btn {% if sort_by == 'view' %}btn-bk{% else %}btn-outline-primary{% endif %}">浏览量</a>
+    <a href="{{ url_for('rank', sort='favorite') }}" class="btn {% if sort_by == 'favorite' %}btn-bk{% else %}btn-outline-primary{% endif %}">收藏量</a>
+    <a href="{{ url_for('rank', sort='new') }}" class="btn {% if sort_by == 'new' %}btn-bk{% else %}btn-outline-primary{% endif %}">最新发布</a>
+  </div>
+</div>
+
+<div class="row g-4">
+  {% for novel in ranked %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card bk-card h-100">
+      <div class="card-body d-flex flex-column">
+        <div class="mb-2">
+          <span class="badge {% if loop.index == 1 %}bg-danger{% elif loop.index == 2 %}bg-warning{% elif loop.index == 3 %}bg-info{% else %}bg-secondary{% endif %}">#{{ loop.index }}</span>
+        </div>
+        <h5 class="card-title text-primary fw-semibold">
+          <a href="{{ url_for('novel_detail', novel_id=novel.id) }}" class="text-decoration-none text-primary">{{ novel.title }}</a>
+        </h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          作者：{{ novel.author_name or '佚名' }}
+          <span class="badge bg-info ms-2">{{ novel.category }}</span>
+        </h6>
+        <p class="card-text flex-grow-1 text-secondary">{{ novel.description or '暂无简介' }}</p>
+        <div class="small text-muted mb-2">
+          <span>浏览：{{ novel.view_count }}</span>
+          <span class="ms-2">下载：{{ novel.download_count }}</span>
+          <span class="ms-2">收藏：{{ novel.favorites|length }}</span>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-auto">
+          <div>
+            <a class="btn btn-bk btn-sm px-3" href="{{ url_for('download', novel_id=novel.id) }}">下载</a>
+            {% if current_user.is_authenticated %}
+            <form method="post" action="{{ url_for('toggle_favorite', novel_id=novel.id) }}" style="display:inline;">
+              <button type="submit" class="btn btn-sm ms-1 {% if novel.id in favorite_novel_ids %}btn-warning{% else %}btn-outline-warning{% endif %}">
+                {% if novel.id in favorite_novel_ids %}已收藏{% else %}收藏{% endif %}
+              </button>
+            </form>
+            {% endif %}
+          </div>
+          <span class="small text-muted">{{ novel.created_at.strftime('%Y-%m-%d') }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="col-12 text-center py-5 text-muted">
+    <em>暂无排行数据～</em>
+  </div>
+  {% endfor %}
+</div>
+
+<footer>
+  &copy; 2025 贝壳书屋 · 让阅读像海风一样清爽
+</footer>
 {% endblock %}
